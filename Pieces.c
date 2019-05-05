@@ -1,16 +1,6 @@
 #include "Pieces.h"
 
-/**
- *@brief Funcion encargada de comparar dos items
- *
- *@param this Primer item a comparar
- *
- *@param other Segundo item a comparar
- *
- *@return True si son iguales en caso cotrario false
- *
- */
-
+/**!< Funcion que compara dos piezas*/
 static bool Compare(Item this, Item other){
 	if(this.id == other.id){				/**!<Compara el id de los items*/		
 		return true;						/**!<Si son iguales retorna true*/
@@ -19,134 +9,91 @@ static bool Compare(Item this, Item other){
 	}
 }
 
+/**!< Funcion que compara coordenadas*/
+static bool CompareCoordinates( Item this, Item other ){
+    if( this.x == other.x && this.y == other.y ){
+        return true;
+    }else{
+        return false;
+    }
+}
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Tower
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
-
+/**!< Funcion que verifica el movimiento de la torre*/
 static bool Tower_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	assert(this);						/**!<Verifica que exista la primer DLL*/	
 	assert(other);						/**!<Verifica que exista la segunda DLL*/	
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Bishop
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
-
+/**!< Funcion que verifica el movimiento del alfil*/
 static bool Bishop_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	assert(this);						/**!<Verifica que exista la primer DLL*/	
 	assert(other);						/**!<Verifica que exista la segunda DLL*/	
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Pawn
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
-
+/**!< Funcion que verifica el movimiento del peon*/
 static bool Pawn_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	assert(this);						/**!<Verifica que exista la primer DLL*/	
 	assert(other);						/**!<Verifica que exista la segunda DLL*/	
+
+	bool done = false;                  /**!< bandera que sive para validar el movimiento*/
+ 
+    Item tmp = { .x = _x, .y = _y };    /**!< Item temporal para comparar las coordenadas a donde llegara la pieza*/
+ 
+    if( _x == piece -> x ){              /**!< Si solo se mueve hacia enfrente o haci atras*/
+ 
+        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){       /**!< Si solo se movio uno hacia adelante o hacia atras*/
+ 
+            if( !DLL_FindIf( this, tmp, CompareCoordenadas) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+ 
+                if( !DLL_FindIf( other, tmp, CompareCoordenadas ) ){    /**!< Compruebo que no haya nadie del otro equipo*/
+ 
+                    done = true;                                        /**!< Valido el movimiento*/
+                }
+            }
+        }
+        else if( (_y == piece -> y + 2 && piece -> y == 2 ) || 
+                 (_y == piece -> y - 2 && piece -> y == 7 ) ){    /**!< Si se mueve dos hacia atras o hacia enfrente*/
+ 
+            if( !DLL_FindIf( this, tmp, CompareCoordenadas) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+ 
+                if( !DLL_FindIf( other, tmp, CompareCoordenadas ) ){    /**!< Compruebo que no haya nadie del otro equipo*/
+ 
+                    done = true;                                        /**!< Valido el movimiento*/
+                }
+            }
+        }
+    }
+    else if( _x == piece -> x + 1 || _x == piece -> x - 1 ){      /**!< Si se movio hacia un lado*/
+ 
+        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){
+ 
+            if( !DLL_FindIf( this, tmp, CompareCoordenadas) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+ 
+                if( DLL_Search( other, tmp, CompareCoordenadas ) ){ /**!< Compruebo que haya alguien del otro equipo*/
+
+					DLL_Remove( other, &tmp );						/**!< Borro la piza del otro equipo*/
+                    done = true;                                        /**!< Valido el movimiento*/
+                }
+            }
+        }
+    } 
+	return done;
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo King
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
-
+/**!< Funcion que verifica el movimiento del rey*/
 static bool King_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	assert(this);						/**!<Verifica que exista la primer DLL*/	
 	assert(other);						/**!<Verifica que exista la segunda DLL*/	
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Queen
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
 
+/**!< Funcion que verifica el movimiento de la reina*/
 static bool Queen_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	assert(this);						/**!<Verifica que exista la primer DLL*/	
 	assert(other);						/**!<Verifica que exista la segunda DLL*/	
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Horse
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
-
+/**!< Funcion que verifica el movimiento del caballo*/
 static bool Horse_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	assert(this);						/**!<Verifica que exista la primer DLL*/	
 	assert(other);						/**!<Verifica que exista la segunda DLL*/	
