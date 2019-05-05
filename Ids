@@ -1,0 +1,37 @@
+Piezas Blancas
+
+1 = Peon_1
+2 = Peon_2
+3 = Peon_3
+4 = Peon_4
+5 = Peon_5
+6 = Peon_6
+7 = Peon_7
+8 = Peon_8
+9 = Torre_1
+10 = Caballo_1
+11 = Alfil_1
+12 = Rey
+13 = Reina
+14 = Alfil_2
+15 = Caballo_2
+16 = Torre_2
+
+Piezas Negras
+
+17 = Peon_1
+18 = Peon_2
+19 = Peon_3
+20 = Peon_4
+21 = Peon_5
+22 = Peon_6
+23 = Peon_7
+24 = Peon_8
+25 = Torre_1
+26 = Caballo_1
+27 = Alfil_1
+28 = Rey
+29 = Reina
+30 = Alfil_2
+31 = Caballo_2
+32 = Torre_2
