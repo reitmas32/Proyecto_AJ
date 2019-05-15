@@ -1,9 +1,16 @@
 #ifndef DLL_INC
 #define DLL_INC
 
+/**!< Bilblioteca para el uso de Memoria Dinamica*/
 #include <stdlib.h>
+
+/**!< Bibliteca para usar assert*/
 #include <assert.h>
+
+/**!< Biblioteca para el uso de operacione booleanas*/
 #include <stdbool.h>
+
+/**!< Biblioteca estandar de c*/
 #include <stdio.h>
 
 /**
@@ -15,10 +22,14 @@ typedef struct Piece{
 	int type;
 	int x;
 	int y;
+	char letter;
 }Piece;
 
-typedef  struct Piece Item;			/**!<Typedefiniendo int como Item*/
-typedef Item* ItemPtr;				/**!<Typedefiniendo Item* como ItemPtr*/
+/**!<Typedefiniendo int como Item*/
+typedef  struct Piece Item;
+
+/**!<Typedefiniendo Item* como ItemPtr*/
+typedef Item* ItemPtr;				
 
 /**
  *@struct Define el TDU Node con su campo de data y dos apuntadores de tipo struct Node
@@ -30,7 +41,8 @@ typedef struct Node{
 	struct Node *prev;
 }Node;
 
-typedef Node *NodePtr;		/**!<Typedefiniendo Node* como NodePtr*/
+/**!<Typedefiniendo Node* como NodePtr*/
+typedef Node *NodePtr;		
 
 /**
  *@struct Define el DLL con sus 3 apuntadores de tipo node y un campo de entero len
@@ -295,5 +307,16 @@ bool DLL_Search(DLL *this, Item _key, bool (*cmp)(Item, Item));
  *
  */
 
-void DLL_Traverse(DLL *this, void (*pfun)(Item));
+void DLL_Traverse(DLL *this, bool (*pfun)(Item));
+
+/**
+ *@brief Función encargada de recorrer una DLL
+ *
+ *@param this Aputnador de tipo DLL
+ *
+ *@param pfun Función que puede hacer cualquier cosa que necesite el valor de un nodo, recibe el apuntador al nodo
+ *
+ */
+
+void DLL_TraverseTwo( DLL* this, bool ( *pfun )( ItemPtr ) );
 #endif

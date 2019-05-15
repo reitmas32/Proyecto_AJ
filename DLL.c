@@ -1,14 +1,7 @@
+/**!< Biblioteca de prototipos de la DLL*/
 #include "DLL.h"
 
-/**
- *@brief Función encargada de crear un nuevo nodo
- *
- *@param _data Item que tendra el nodo
- *
- *@return Apuntador de tipo Node
- *
- */
-
+/**!< Función qu crea un nuevo nodo*/
 static NodePtr newNode(Item _data){
 	NodePtr n = (NodePtr)malloc(sizeof(Node));		/**!<Pide memoria para un nuevo nodo*/
 	if(n){											/**!<Verifica que se haya creado el nuevo nodo*/
@@ -19,13 +12,7 @@ static NodePtr newNode(Item _data){
 	return n;										/**!<Retorna un aputnador de tipo Node*/
 }
 
-/**
- *@brief Función encargada de resetar los apuntador de una DLL
- *
- *@param this Apuntador de tipo DLL
- *
- */
-
+/**!< Función que resetea la DLL*/
 static void reset(DLL *this){
 	this -> first = this -> last = this -> cursor = NULL;		/**!<Cambia el valor de first, last y cursor a NULL*/
 	this -> len = 0;											/**!<Cambia el valor de Len a 0*/
@@ -365,7 +352,7 @@ bool DLL_Search(DLL *this, Item _key, bool (*cmp)(Item, Item)){
 
 }
 
-void DLL_Traverse(DLL *this, void (*pfun)(Item)){
+void DLL_Traverse(DLL *this, bool (*pfun)(Item)){
 
 	assert(this);													/**!<Verifica que exista la DLL*/
 
@@ -374,6 +361,11 @@ void DLL_Traverse(DLL *this, void (*pfun)(Item)){
 	}
 }
 
+void DLL_TraverseTwo( DLL* this, bool ( *pfun )( ItemPtr ) ){
 
+	 assert( this );													/**!< Verifica qu exista la DLL*/
 
-
+	for(NodePtr it = this -> first; it != NULL; it = it -> next ){		/**!<Bucle que se repite mientras it sea diferente de NULL*/
+		pfun( &it -> data );											/**!<Lamado a función*/
+	}
+}

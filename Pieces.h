@@ -1,6 +1,7 @@
-#ifndef __PIECES_H
-#define __PIECES_H
+#ifndef __PIECES_H__
+#define __PIECES_H__
 
+/**!< Biblioteca para la utilización de DLL´s*/
 #include "DLL.h"
 
 /**

@@ -1,8 +1,9 @@
-#include "Pieces.h"
+/**!< Biblioteca Board.h*/
+#include "Board.h"
 
 int main(){
-	DLL *Pieces_Black = Initialize(1);
-	DLL *Pieces_White = Initialize(0);
 
-	Erease(Pieces_White,Pieces_Black);
+    menu();
+
+    return 0;
 }
