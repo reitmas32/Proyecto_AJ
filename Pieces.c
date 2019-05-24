@@ -1,16 +1,19 @@
-/**!< Biblioteca de los prototipos del TDU Piece*/
+/*Biblioteca de los prototipos del TDU Piece*/
 #include "Pieces.h"
 
-/**!< Funcion que Compara Ids*/
+/*Funcion que Compara Ids*/
 static bool CompareId(Item this, Item other){
-	if(this.id == other.id){				/**!<Compara el id de los items*/		
-		return true;						/**!<Si son iguales retorna true*/
+	/*Compara el id de los items*/
+	if(this.id == other.id){		
+		/*Si son iguales retorna true*/				
+		return true;						
 	}else{
-		return false;						/**!<Si son diferentes retorna false*/	
+		/*Si son diferentes retorna false*/
+		return false;							
 	}
 }
 
-/**!< Funcion que compara coordenadas*/
+/*Funcion que compara coordenadas*/
 static bool CompareCoordinates( Item this, Item other ){
     if( this.x == other.x && this.y == other.y ){
         return true;
@@ -19,39 +22,36 @@ static bool CompareCoordinates( Item this, Item other ){
     }
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Tower
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
-static bool Tower_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
-	assert(this);						/**!<Verifica que exista la primer DLL*/	
-	assert(other);						/**!<Verifica que exista la segunda DLL*/
 
+static bool Tower_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
+	/*Verifica que exista la primer DLL*/
+	assert(this);			
+
+	/*Verifica que exista la segunda DLL*/				
+	assert(other);						
+
+	/**!< bandera que sirve para validar el movimiento*/
 	bool done = false;
 
-    Item tmp = { .x = _x, .y = _y };    /**!< Item temporal para comparar las coordenadas a donde llegara la pieza*/
+	/*Item temporal para comparar las coordenadas a donde llegara la pieza*/
+    Item tmp = { .x = _x, .y = _y };    
 
-	if( _x == piece -> x || _y == piece -> y ){				/**!< Si se movio en una direccion*/
+    /*Si se movio en una direccion*/
+	if( _x == piece -> x || _y == piece -> y ){				
 
-		if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+		/*Comprueba que no haya nadie de mi equipo*/
+		if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
 
-			done = true;										/**!< Valido el movimiento*/
+			/*Valido el movimiento*/
+			done = true;			
 
-			if( DLL_Search( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que si haya alguien del otro equipo*/
+			/*Comprueba que si haya alguien del otro equipo*/							
 
-				DLL_Remove( other, &tmp );							/**!< Borro la piza del otro equipo*/
+			if( DLL_Search( other, tmp, CompareCoordinates ) ){  
+
+				/*Borro la piza del otro equipo*/  
+
+				DLL_Remove( other, &tmp );							
 			
 			}
 		}
@@ -61,40 +61,35 @@ static bool Tower_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	return done;
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Bishop
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
 static bool Bishop_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
-	assert(this);						/**!<Verifica que exista la primer DLL*/	
-	assert(other);						/**!<Verifica que exista la segunda DLL*/
+	/*Verifica que exista la primer DLL*/	
+	assert(this);						
 
+	/*Verifica que exista la segunda DLL*/
+	assert(other);						
+
+	/**!< bandera que sirve para validar el movimiento*/
 	bool done = false;
 
-	Item tmp = { .x = _x, .y = _y };    /**!< Item temporal para comparar las coordenadas a donde llegara la pieza*/
+	/*Item temporal para comparar las coordenadas a donde llegara la pieza*/
+	Item tmp = { .x = _x, .y = _y };    
 
 	if( _x - piece -> x == piece -> y - _y ||
-		piece -> x - _x == piece -> y - _y){	/**!< COmpruevo que la diferencia entre las coordenadas en 'x' y 'y' sea igual*/
 
-		if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+		/*Comprueba que la diferencia entre las coordenadas en 'x' y 'y' sea igual*/
+		piece -> x - _x == piece -> y - _y){	
 
-			done = true;										/**!< Valido el movimiento*/
+		 /*Compruebo que no haya nadie de mi equipo*/
+		if( !DLL_FindIf( this, tmp, CompareCoordinates) ){     
 
-			if( DLL_Search( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que si haya alguien del otro equipo*/
+			/*Valido el movimiento*/
+			done = true;										
 
-				DLL_Remove( other, &tmp );							/**!< Borro la piza del otro equipo*/
+			/*Comprueba que si haya alguien del otro equipo*/
+			if( DLL_Search( other, tmp, CompareCoordinates ) ){    
+
+				/*Borro la piza del otro equipo*/
+				DLL_Remove( other, &tmp );							
 			
 			}
 		}		
@@ -103,64 +98,72 @@ static bool Bishop_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	return done;	
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Pawn
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
 static bool Pawn_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
-	assert(this);						/**!<Verifica que exista la primer DLL*/	
-	assert(other);						/**!<Verifica que exista la segunda DLL*/	
 
-	bool done = false;                  /**!< bandera que sive para validar el movimiento*/
+	/*Verifica que exista la primer DLL*/
+	assert(this);		
+
+	/*Verifica que exista la segunda DLL*/	
+	assert(other);						
+
+	/**!< bandera que sirve para validar el movimiento*/
+	bool done = false;                  
  
-    Item tmp = { .x = _x, .y = _y };    /**!< Item temporal para comparar las coordenadas a donde llegara la pieza*/
+ 	/*Item temporal para comparar las coordenadas a donde llegara la pieza*/
+    Item tmp = { .x = _x, .y = _y };    
+
+    /*Si solo se mueve hacia enfrente o haci atras*/
+    if( _x == piece -> x ){              
  
-    if( _x == piece -> x ){              /**!< Si solo se mueve hacia enfrente o haci atras*/
+ 		/*Si solo se movio uno hacia adelante o hacia atras*/
+        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){       
  
-        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){       /**!< Si solo se movio uno hacia adelante o hacia atras*/
+ 			/*Comprueba que no haya nadie de mi equipo*/
+            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
  
-            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+ 				/*Comprueba que no haya nadie del otro equipo*/
+                if( !DLL_FindIf( other, tmp, CompareCoordinates ) ){    
  
-                if( !DLL_FindIf( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que no haya nadie del otro equipo*/
- 
-                    done = true;                                        /**!< Valido el movimiento*/
+ 					/*Valido el movimiento*/
+                    done = true;                                        
                 }
             }
         }
+
+        /*Si se mueve dos hacia atras o hacia enfrente*/
         else if( (_y == piece -> y + 2 && piece -> y == 2 ) || 
-                 (_y == piece -> y - 2 && piece -> y == 7 ) ){    /**!< Si se mueve dos hacia atras o hacia enfrente*/
+                 (_y == piece -> y - 2 && piece -> y == 7 ) ){    
  
-            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+ 			/*Comprueba que no haya nadie de mi equipo*/
+            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
  
-                if( !DLL_FindIf( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que no haya nadie del otro equipo*/
+
+ 				/*Comprueba que no haya nadie del otro equipo*/
+                if( !DLL_FindIf( other, tmp, CompareCoordinates ) ){    
  
-                    done = true;                                        /**!< Valido el movimiento*/
+ 					/*Valido el movimiento*/
+                    done = true;                                        
                 }
             }
         }
     }
-    else if( _x == piece -> x + 1 || _x == piece -> x - 1 ){      /**!< Si se movio hacia un lado*/
+
+    /*Si se movio hacia un lado*/
+    else if( _x == piece -> x + 1 || _x == piece -> x - 1 ){      
  
         if( _y == piece -> y + 1 || _y == piece -> y - 1 ){
  
-            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+ 			/*Compruebo que no haya nadie de mi equipo*/
+            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
  
-                if( DLL_Search( other, tmp, CompareCoordinates ) ){ /**!< Compruebo que haya alguien del otro equipo*/
+ 				/*Compruebo que haya alguien del otro equipo*/
+                if( DLL_Search( other, tmp, CompareCoordinates ) ){ 
 
-					DLL_Remove( other, &tmp );						/**!< Borro la piza del otro equipo*/
-                    done = true;                                        /**!< Valido el movimiento*/
+                	/*Borro la piza del otro equipo*/
+					DLL_Remove( other, &tmp );		
+
+					/*Valido el movimiento*/				
+                    done = true;                                        
                 }
             }
         }
@@ -172,73 +175,84 @@ static bool Pawn_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	return done;
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo King
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
+
 static bool King_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
-	assert(this);						/**!<Verifica que exista la primer DLL*/	
-	assert(other);						/**!<Verifica que exista la segunda DLL*/
 
-	bool done = false;                  /**!< bandera que sive para validar el movimiento*/
- 
-    Item tmp = { .x = _x, .y = _y };    /**!< Item temporal para comparar las coordenadas a donde llegara la pieza*/
- 
-    if( _x == piece -> x ){              /**!< Si no se mueve al los lados*/
- 
-        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){       /**!< Si solo se movio uno hacia adelante o hacia atras*/
- 
-            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+	/*Verifica que exista la primer DLL*/
+	assert(this);			
 
-				done = true;										/**!< Valido el movimiento*/
+	/*Verifica que exista la segunda DLL*/				
+	assert(other);						
+
+	/**!<Bandera que sive para validar el movimiento*/
+	bool done = false;                  
  
-                if( DLL_Search( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que si haya alguien del otro equipo*/
+ 	/*Item temporal para comparar las coordenadas a donde llegara la pieza*/
+    Item tmp = { .x = _x, .y = _y };    
  
-					DLL_Remove( other, &tmp );							/**!< Borro la piza del otro equipo*/
+
+ 	/*Si no se mueve al los lados*/
+    if( _x == piece -> x ){              
+ 
+ 		/*Si solo se movio uno hacia adelante o hacia atras*/
+        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){       
+ 
+ 			/*Compruebo que no haya nadie de mi equipo*/
+            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
+
+            	/*Valido el movimiento*/
+				done = true;										
+ 
+ 				/*Compruebo que si haya alguien del otro equipo*/
+                if( DLL_Search( other, tmp, CompareCoordinates ) ){    
+ 
+ 					/*Borro la piza del otro equipo*/
+					DLL_Remove( other, &tmp );							
               
                 }
             }
         }
 	}
-	else if( _y == piece -> y ){		/**!< Si no se mueve al los lados */
 
-		if( _x == piece -> x + 1 || _x == piece -> x - 1 ){		/**!< Si solo se movio uno hacia atras o hacia adelante*/
+	/*Si no se mueve al los lados */
+	else if( _y == piece -> y ){		
 
-            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+		/*Si solo se movio uno hacia atras o hacia adelante*/
+		if( _x == piece -> x + 1 || _x == piece -> x - 1 ){		
 
-				done = true;										/**!< Valido el movimiento*/
+			/*Compruebo que no haya nadie de mi equipo*/
+            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
+
+            	/*Valido el movimiento*/
+				done = true;										
  
-                if( DLL_Search( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que si haya alguien del otro equipo*/
+ 				/*Compruebo que si haya alguien del otro equipo*/
+                if( DLL_Search( other, tmp, CompareCoordinates ) ){    
  
-					DLL_Remove( other, &tmp );							/**!< Borro la piza del otro equipo*/
+ 					/*Borro la piza del otro equipo*/
+					DLL_Remove( other, &tmp );							
                 }
             }
 		}
 
 	}
-	else if( _x == piece -> x + 1 || _x == piece -> x - 1 ){		/**!< Si se movi uno hacia los lados*/
+	/*Si se movi uno hacia los lados*/
+	else if( _x == piece -> x + 1 || _x == piece -> x - 1 ){		
 
-        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){       /**!< Si solo se movio uno hacia adelante o hacia atras*/
+		/*Si solo se movio uno hacia adelante o hacia atras*/
+        if( _y == piece -> y + 1 || _y == piece -> y - 1 ){       
  
-            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+ 			/*Compruebo que no haya nadie de mi equipo*/
+            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
 
-				done = true;										/**!< Valido el movimiento*/
+            	/*Valido el movimiento*/
+				done = true;										
  
-                if( DLL_Search( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que si haya alguien del otro equipo*/
+ 				/*Compruebo que si haya alguien del otro equipo*/
+                if( DLL_Search( other, tmp, CompareCoordinates ) ){    
  
-					DLL_Remove( other, &tmp );							/**!< Borro la piza del otro equipo*/
+ 					/*Borro la piza del otro equipo*/
+					DLL_Remove( other, &tmp );							
               
                 }
             }
@@ -248,59 +262,38 @@ static bool King_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 	return done;	
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Queen
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
 static bool Queen_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
-	assert(this);						/**!<Verifica que exista la primer DLL*/	
-	assert(other);						/**!<Verifica que exista la segunda DLL*/	
+	/*Verifica que exista la primer DLL*/
+	assert(this);		
+
+	/*Verifica que exista la segunda DLL*/		
+	assert(other);							
 
 	bool done = false;
 
-	if( Tower_Move( this, other, piece, _x, _y ) ^ Bishop_Move( this, other, piece, _x, _y ) ){		/**!< Utilizo las otras dos funciones ya que la reyna semueve como culaquiera de las dos */
-		/**!< En la linea anterior se utixo la compuerta logica XOR '^' */
+	/*Utilizo las otras dos funciones ya que la reyna semueve como culaquiera de las dos */
+	if( Tower_Move( this, other, piece, _x, _y ) ^ Bishop_Move( this, other, piece, _x, _y ) ){		
+		/*En la linea anterior se utilizo la compuerta logica XOR '^' */
 		done = true;
 	}
 
 	return done;
 }
 
-/**
- *@brief Funcion encargada de mover una Piece de tipo Horse
- *
- *@param this DLL de los Items aliados
- *
- *@param other DLL de los Items enemigos
- *
- *@param piece Objeto a mover
- *
- *@param _x Coordenada a la que se va a mover el objeto en x
- *
- *@param _y Coordenada a la que se va a mover el objeto en y
- *
- *@return True si se puede mover el objeto en caso contrario False
- *
- */
 static bool Horse_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
-	assert(this);						/**!<Verifica que exista la primer DLL*/	
-	assert(other);						/**!<Verifica que exista la segunda DLL*/	
+
+	/*Verifica que exista la primer DLL*/
+	assert(this);			
+
+	/*Verifica que exista la segunda DLL*/					
+	assert(other);						
 
 	bool done = false;
 
-	Item tmp = { .x = _x, .y = _y };    /**!< Item temporal para comparar las coordenadas a donde llegara la pieza*/
+	/*Item temporal para comparar las coordenadas a donde llegara la pieza*/
+	Item tmp = { .x = _x, .y = _y };    
+
+	/*Compruebo todas las combinaciones de las piezas*/
 
 	if( ( _x == piece -> x + 1 && _y == piece -> y + 2 ) ||
 		( _x == piece -> x + 1 && _y == piece -> y - 2 ) ||
@@ -309,18 +302,22 @@ static bool Horse_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 		( _x == piece -> x + 2 && _y == piece -> y + 1 ) ||
 		( _x == piece -> x + 2 && _y == piece -> y - 1 ) ||
 		( _x == piece -> x - 2 && _y == piece -> y + 1 ) ||
-		( _x == piece -> x - 2 && _y == piece -> y - 1 ) 		/**!< Compruebo todas las combinaciones de las piezas*/
+		( _x == piece -> x - 2 && _y == piece -> y - 1 ) 		
 		){
 
 			done = true;
 
-            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      /**!< Compruebo que no haya nadie de mi equipo*/
+			/*Compruebo que no haya nadie de mi equipo*/
+            if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
 
-				done = true;										/**!< Valido el movimiento*/
+            	/*Valido el movimiento*/
+				done = true;										
  
-                if( DLL_Search( other, tmp, CompareCoordinates ) ){    /**!< Compruebo que si haya alguien del otro equipo*/
+ 				/*Compruebo que si haya alguien del otro equipo*/
+                if( DLL_Search( other, tmp, CompareCoordinates ) ){    
  
-					DLL_Remove( other, &tmp );							/**!< Borro la piza del otro equipo*/
+ 					/*Borro la piza del otro equipo*/
+					DLL_Remove( other, &tmp );							
               
                 }
             }
@@ -332,131 +329,241 @@ static bool Horse_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
 
 DLL *Initialize(int type){
 
-	DLL *this = DLL_New();							/**!<Crea la DLL generica*/
+	/*Crea la DLL generica*/
+	DLL *this = DLL_New();							
 
 	if(type == 0){
-		/**!<Creación de las piezas blancas*/
 
-		DLL_InsertBack(this,(Item){1,3,1,2});		/**!<Crea al Peon 1*/
-		DLL_InsertBack(this,(Item){2,3,2,2});		/**!<Crea al Peon 2*/
-		DLL_InsertBack(this,(Item){3,3,3,2});		/**!<Crea al Peon 3*/
-		DLL_InsertBack(this,(Item){4,3,4,2});		/**!<Creaal Peon 4*/
-		DLL_InsertBack(this,(Item){5,3,5,2});		/**!<Crea al Peon 5*/
-		DLL_InsertBack(this,(Item){6,3,6,2});		/**!<Crea al Peon 6*/
-		DLL_InsertBack(this,(Item){7,3,7,2});		/**!<Crea al Peon 7*/
-		DLL_InsertBack(this,(Item){8,3,8,2});		/**!<Crea al Peon 8*/
-		DLL_InsertBack(this,(Item){9,1,1,1});		/**!<Crea a la Torre 1*/
-		DLL_InsertBack(this,(Item){10,6,2,1});		/**!<Crea al Caballo 1*/
-		DLL_InsertBack(this,(Item){11,2,3,1});		/**!<Crea al Alfin 1*/
-		DLL_InsertBack(this,(Item){12,4,4,1});		/**!<Crea al Rey*/
-		DLL_InsertBack(this,(Item){13,5,5,1});		/**!<Crea a la Reina*/
-		DLL_InsertBack(this,(Item){14,2,6,1});		/**!<Crea al Alfin 2*/
-		DLL_InsertBack(this,(Item){15,6,7,1});		/**!<Crea al Caballo 2*/
-		DLL_InsertBack(this,(Item){16,1,8,1});		/**!<Crea a la Torre 2*/
+		/*Creación de las piezas blancas*/
+
+		/*Crea al Peon 1*/
+		DLL_InsertBack(this,(Item){1,3,1,2});	
+
+		/*Crea al Peon 2*/	
+		DLL_InsertBack(this,(Item){2,3,2,2});	
+
+		/*Crea al Peon 3*/	
+		DLL_InsertBack(this,(Item){3,3,3,2});
+
+		/*Crea al Peon 4*/		
+		DLL_InsertBack(this,(Item){4,3,4,2});
+
+		/*Crea al Peon 5*/		
+		DLL_InsertBack(this,(Item){5,3,5,2});
+
+		/*Crea al Peon 6*/		
+		DLL_InsertBack(this,(Item){6,3,6,2});	
+
+		/*Crea al Peon 7*/	
+		DLL_InsertBack(this,(Item){7,3,7,2});	
+
+		/*Crea al Peon 8*/	
+		DLL_InsertBack(this,(Item){8,3,8,2});	
+
+		/*Crea a la Torre 1*/	
+		DLL_InsertBack(this,(Item){9,1,1,1});	
+
+		/*Crea al Caballo 1*/	
+		DLL_InsertBack(this,(Item){10,6,2,1});		
+
+		/*Crea al Alfin 1*/
+		DLL_InsertBack(this,(Item){11,2,3,1});		
+
+		/*Crea al Rey*/
+		DLL_InsertBack(this,(Item){12,4,4,1});	
+
+		/*Crea a la Reina*/	
+		DLL_InsertBack(this,(Item){13,5,5,1});		
+
+		/*Crea al Alfin 2*/
+		DLL_InsertBack(this,(Item){14,2,6,1});		
+
+		/*Crea al Caballo 2*/
+		DLL_InsertBack(this,(Item){15,6,7,1});		
+
+		/*Crea a la Torre 2*/
+		DLL_InsertBack(this,(Item){16,1,8,1});		
 
 	}else{
 
-		/**!<Creación de la piezas negras*/
+		/*Creación de la piezas negras*/
 
-		DLL_InsertBack(this,(Item){17,3,1,7});		/**!<Creando el Peon 1*/
-		DLL_InsertBack(this,(Item){18,3,2,7});		/**!<Creando el Peon 2*/
-		DLL_InsertBack(this,(Item){19,3,3,7});		/**!<Creando el Peon 3*/
-		DLL_InsertBack(this,(Item){20,3,4,7});		/**!<Creando el Peon 4*/
-		DLL_InsertBack(this,(Item){21,3,5,7});		/**!<Creando el Peon 5*/
-		DLL_InsertBack(this,(Item){22,3,6,7});		/**!<Creando el Peon 6*/
-		DLL_InsertBack(this,(Item){23,3,7,7});		/**!<Creando el Peon 7*/
-		DLL_InsertBack(this,(Item){24,3,8,7});		/**!<Creando el Peon 8*/
-		DLL_InsertBack(this,(Item){25,1,1,8});		/**!<Creando la Torre 1*/
-		DLL_InsertBack(this,(Item){26,6,2,8});		/**!<Creando al Caballo 1*/
-		DLL_InsertBack(this,(Item){27,2,3,8});		/**!<Creando Alfil 1*/
-		DLL_InsertBack(this,(Item){28,4,4,8});		/**!<Creando al Rey*/
-		DLL_InsertBack(this,(Item){29,5,5,8});		/**!<Creando a la Reina*/
-		DLL_InsertBack(this,(Item){30,2,6,8});		/**!<Creando al Alfin 2*/
-		DLL_InsertBack(this,(Item){31,6,7,8});		/**!<Creando al Caballo 2*/
-		DLL_InsertBack(this,(Item){32,1,8,8});		/**!<Creando a la Toree 2*/
+		/*Creando el Peon 1*/
+		DLL_InsertBack(this,(Item){17,3,1,7});	
+
+		/*Creando el Peon 2*/	
+		DLL_InsertBack(this,(Item){18,3,2,7});		
+
+		/*Creando el Peon 3*/
+		DLL_InsertBack(this,(Item){19,3,3,7});		
+
+		/*Creando el Peon 4*/
+		DLL_InsertBack(this,(Item){20,3,4,7});		
+
+		/*Creando el Peon 5*/
+		DLL_InsertBack(this,(Item){21,3,5,7});	
+
+		/*Creando el Peon 6*/	
+		DLL_InsertBack(this,(Item){22,3,6,7});	
+
+		/*Creando el Peon 7*/	
+		DLL_InsertBack(this,(Item){23,3,7,7});	
+
+		/*Creando el Peon 8*/	
+		DLL_InsertBack(this,(Item){24,3,8,7});	
+
+		/*Creando la Torre 1*/	
+		DLL_InsertBack(this,(Item){25,1,1,8});	
+
+		/*Creando al Caballo 1*/	
+		DLL_InsertBack(this,(Item){26,6,2,8});	
+
+		/*Creando Alfil 1*/	
+		DLL_InsertBack(this,(Item){27,2,3,8});	
+
+		/*Creando al Rey*/	
+		DLL_InsertBack(this,(Item){28,4,4,8});		
+
+		/*Creando a la Reina*/
+		DLL_InsertBack(this,(Item){29,5,5,8});	
+
+		/*Creando al Alfin 2*/	
+		DLL_InsertBack(this,(Item){30,2,6,8});
+
+		/*Creando al Caballo 2*/		
+		DLL_InsertBack(this,(Item){31,6,7,8});		
+
+		/*Creando a la Toree 2*/
+		DLL_InsertBack(this,(Item){32,1,8,8});		
 
 	}
 
-	return this;									/**!<Retorna la DLL rellenada con las piezas correspondientes*/
+	/*Retorna la DLL rellenada con las piezas correspondientes*/
+	return this;									
 }
 
 void Erease(DLL *this, DLL *other){
-	assert(this);					/**!<Verifica que exista la primer DLL*/
-	assert(other);					/**!<Verifica que exista la segunda DLL*/
 
-	DLL_Delete(this);				/**!<Elimina la primer DLL*/
-	DLL_Delete(other);				/**!<elimina la segunda DLL*/
+	/*Verifica que exista la primer DLL*/
+	assert(this);		
+
+	/*Verifica que exista la segunda DLL*/			
+	assert(other);					
+
+	/*Elimina la primer DLL*/
+	DLL_Delete(this);	
+
+	/*Elimina la segunda DLL*/
+	DLL_Delete(other);				
 
 }
 	
 bool Piece_Move(DLL *white, DLL *black, int _x, int _y, int _id){
-	assert(white);												/**!<Verifica que exista la DLL de piezas blancas*/
-	assert(black);												/**!<Verifica que exista la DLL de piezas negras*/
 
-	bool done = false;											/**!<Bandera que indica si se puede hacer el movimiento o no*/
-	Item tmp = {_id,0,0,0};										/**!<Item generico para comparar los ids en las DLLs*/
+	/*Verifica que exista la DLL de piezas blancas*/
+	assert(white);					
 
-	if(_id >=1 && _id <=16){									/**!<Ve si la pieza es blanca*/
+	/*Verifica que exista la DLL de piezas negras*/							
+	assert(black);												
 
-		DLL_Search(white,tmp,CompareId);							/**!<Busca la pieza en la DLL de su equipo*/
-		DLL_Peek(white,&tmp);									/**!<Actualiza el item generico y lo convierte en la pieza a mover*/
+	/**!<Bandera que indica si se puede hacer el movimiento o no*/
+	bool done = false;		
 
-		switch(tmp.type){										/**!<Ve de que tipo de pieza se trata*/
+	/*Item generico para comparar los ids en las DLLs*/									
+	Item tmp = {_id,0,0,0};										
+
+	/*Ve si la pieza es blanca*/
+	if(_id >=1 && _id <=16){									
+
+		/*Busca la pieza en la DLL de su equipo*/
+		DLL_Search(white,tmp,CompareId);
+
+		/*Actualiza el item generico y lo convierte en la pieza a mover*/							
+		DLL_Peek(white,&tmp);									
+
+		/*Ve de que tipo de pieza se trata*/
+		switch(tmp.type){										
 			case 1:
-				done = Tower_Move(white,black,&tmp,_x,_y); 		/**!<Movimiento de la Torre*/
+				/*Movimiento de la Torre*/
+				done = Tower_Move(white,black,&tmp,_x,_y); 		
 				break;
 			case 2:
-				done = Bishop_Move(white,black,&tmp,_x,_y); 	/**!<Movimiento del Alfil*/
+				/*Movimiento del Alfil*/
+				done = Bishop_Move(white,black,&tmp,_x,_y); 	
 				break;
 			case 3:
-				done = Pawn_Move(white,black,&tmp,_x,_y); 		/**!<Movimiento del Peon*/
+				/*Movimiento del Peon*/
+				done = Pawn_Move(white,black,&tmp,_x,_y); 		
 				break;
 			case 4:
-				done = King_Move(white,black,&tmp,_x,_y); 		/**!<Movimiento del Rey*/
+				/*Movimiento del Rey*/
+				done = King_Move(white,black,&tmp,_x,_y); 		
 				break;
 			case 5:
-				done = Queen_Move(white,black,&tmp,_x,_y);		/**!<Movimiento de la Reina*/
+				/*Movimiento de la Reina*/
+				done = Queen_Move(white,black,&tmp,_x,_y);		
 				break;
 			case 6:
-				done = Horse_Move(white,black,&tmp,_x,_y); 		/**!<Movimiento del Caballo*/
+				/*Movimiento del Caballo*/
+				done = Horse_Move(white,black,&tmp,_x,_y); 		
 				break;
 		}
 
-		if (done == true){										/**!<Si es valido el movimiento*/
-			white -> cursor -> data.x = _x;						/**!<Actualizamos las coordenadas de la pieza en x*/
-			white -> cursor -> data.y = _y;						/**!<Actualizamos las coordenadas de la pieza en y*/
+		/*Si es valido el movimiento*/
+		if (done == true){		
+
+			/*Actualizamos las coordenadas de la pieza en x*/								
+			white -> cursor -> data.x = _x;	
+
+			/*Actualizamos las coordenadas de la pieza en y*/					
+			white -> cursor -> data.y = _y;						
 		}
 
-	}else if(_id >16 && _id <=32){								/**!<Ve si la pieza es negra*/
+	/*Ve si la pieza es negra*/
+	}else if(_id >16 && _id <=32){								
 
-			DLL_Search(black,tmp,CompareId);						/**!<Busca la pieza en la DLL de su equipo*/
-			DLL_Peek(black,&tmp);								/**!<Actualiza el item generico y lo convierte en la pieza a mover*/
+			/*Busca la pieza en la DLL de su equipo*/
+			DLL_Search(black,tmp,CompareId);			
+
+			/*Actualiza el item generico y lo convierte en la pieza a mover*/
+			DLL_Peek(black,&tmp);								
 
 			switch(tmp.type){
 				case 1:
-					done = Tower_Move(black,white,&tmp,_x,_y); 		/**!<Movimiento de la Torre*/
+					/*Movimiento de la Torre*/
+					done = Tower_Move(black,white,&tmp,_x,_y); 		
 					break;
 				case 2:
-					done = Bishop_Move(black,white,&tmp,_x,_y); 	/**!<Movimiento del Alfil*/
+					/*Movimiento del Alfil*/
+					done = Bishop_Move(black,white,&tmp,_x,_y); 	
 					break;
 				case 3:
-					done = Pawn_Move(black,white,&tmp,_x,_y); 		/**!<Movimiento del Peon*/
+					/*Movimiento del Peon*/
+					done = Pawn_Move(black,white,&tmp,_x,_y); 		
 					break;
 				case 4:
-					done = King_Move(black,white,&tmp,_x,_y); 		/**!<Movimiento del Rey*/
+					/*Movimiento del Rey*/
+					done = King_Move(black,white,&tmp,_x,_y); 		
 					break;
 				case 5:
-					done = Queen_Move(black,white,&tmp,_x,_y);		/**!<Movimiento de la Reina*/
+					/*Movimiento de la Reina*/
+					done = Queen_Move(black,white,&tmp,_x,_y);		
 					break;
 				case 6:
-					done = Horse_Move(black,white,&tmp,_x,_y); 		/**!<Movimiento del Caballo*/
+					/*Movimiento del Caballo*/
+					done = Horse_Move(black,white,&tmp,_x,_y); 		
 					break;
 
 		}
 
-		if (done == true){											/**!<Si es valido el movimiento*/
-			black -> cursor -> data.x = _x;							/**!<Actualizamos las coordenadas de la pieza en x*/
-			black -> cursor -> data.y = _y;							/**!<Actualizamos las coordenadas de la pieza en y*/
+		/*Si es valido el movimiento*/
+		if (done == true){	
+
+			/*Actualizamos las coordenadas de la pieza en x*/										
+			black -> cursor -> data.x = _x;	
+
+			/*Actualizamos las coordenadas de la pieza en y*/
+			black -> cursor -> data.y = _y;							
 		}
 	}
 	return done;
