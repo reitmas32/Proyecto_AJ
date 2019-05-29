@@ -376,7 +376,7 @@ static bool Horse_Move(DLL* this, DLL *other, Item *piece, int _x, int _y){
     /*Si la pieza se mueve dos espacios en 'x' y uno en 'y' o dos en 'y' y uno en 'x'*/
     if( ( abs( _x - piece->x )==1 && abs( _y - piece->y )==2 ) || ( abs( _x - piece->x )==2 && abs( _y - piece->y ) ) ){
  
-            done = true;
+            
 
             /*Comprueba que no haya nadie del mismo equipo*/
             if( !DLL_FindIf( this, tmp, CompareCoordinates) ){      
