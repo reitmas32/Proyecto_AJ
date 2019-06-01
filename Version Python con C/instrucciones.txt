@@ -1,1 +1,3 @@
-gcc -Wall -std=c99 -o Ajedrez.out main.c Pieces.c DLL.c
+1- gcc -Wall -std=c99 -o Ajedrez.out main.c Pieces.c DLL.c
+
+2- python3 Ajedrez.py
