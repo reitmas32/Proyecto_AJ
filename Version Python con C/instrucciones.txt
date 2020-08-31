@@ -1,3 +1,7 @@
 1- gcc -Wall -std=c99 -o Ajedrez.out main.c Pieces.c DLL.c
 
-2- python3 Ajedrez.py
+2- "Linux-Ubuntu"
+    sudo apt-get install python-tk
+    sudo apt-get install python3-tk
+
+3- python3 Ajedrez.py
